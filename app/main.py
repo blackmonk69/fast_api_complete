@@ -32,7 +32,7 @@ while True:
             print ("Error", error)
             time.sleep(2)
             
-            
+             
         #SECCION RUTEADORES    
 #esta parte le dice donde buscar los endpoints
 app.include_router(post.router) #esto le dice que vaya al file post y busque ahi los match
