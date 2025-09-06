@@ -7,11 +7,12 @@ from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
-from . import models,schemas,utils
+from . import models
 from .database import engine, get_db
 from sqlalchemy.orm import Session
 from app.models import Post
-from . routers import post, user
+from . routers import post, user,auth
+import asyncio
 
 
 models.Base.metadata.create_all (bind=engine)
@@ -32,10 +33,11 @@ while True:
             time.sleep(2)
             
             
+        #SECCION RUTEADORES    
 #esta parte le dice donde buscar los endpoints
 app.include_router(post.router) #esto le dice que vaya al file post y busque ahi los match
 app.include_router(user.router) #esto le dice que vaya al file post y busque ahi los match
-
+app.include_router(auth.router)
 
 #MENSAJE DE PRUEBA
 #----------------------------------------------------------------------------------

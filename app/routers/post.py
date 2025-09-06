@@ -1,4 +1,4 @@
-from .. import models,schemas
+from .. import models,schemas,oauth
 from fastapi import FastAPI, Response, status,HTTPException,Depends,APIRouter
 from sqlalchemy.orm import Session
 from ..database import get_db 
@@ -21,11 +21,12 @@ def get_posts(db: Session = Depends(get_db)):
           response_model=schemas.Class_Response_Post)   #esto sirve para modelar la respuesta, la cual es nuevo_post pero con el formato del Response
 
 def create_posts(posteo: schemas.Class_CreatePost , 
-                 db: Session = Depends(get_db)): #no confundir uno es la clase post (schema) (que recibe los datos) y el otro el modelo post
+                 db: Session = Depends(get_db), user_id: int= Depends(oauth.get_current_user)): #no confundir uno es la clase post (schema) (que recibe los datos) y el otro el modelo post
+
     nuevo_post =  models.Post(**posteo.model_dump())
-    db.add(nuevo_post)
+    db.add(nuevo_post) 
     db.commit()
-    db.refresh(nuevo_post)
+    db.refresh(nuevo_post) 
     return nuevo_post
 
 #TRAE UN POST

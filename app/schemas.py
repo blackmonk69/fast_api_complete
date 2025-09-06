@@ -1,6 +1,6 @@
 from pydantic import BaseModel,EmailStr
 from datetime import datetime
-
+from typing import Optional
 
 #----------------------------------------------------------------------------------
 #ESTO ES UN SCHEMA, SIRVE PARA MODELAR EL REQUEST, TAMBIEN SE PUEDE DEFINIR UN SCHEMA PARA MODELAR EL RESPONSE
@@ -35,4 +35,11 @@ class Class_UserLogin(BaseModel):
     email:EmailStr
     password: str 
     class Config:
-        from_attributes = True  #cuando es un response, una salida, se coloca esta config        
+        from_attributes = True  #cuando es un response, una salida, se coloca esta config  
+
+class Class_Token(BaseModel):
+    access_token:str
+    token_type:str
+    
+class Class_Token_Data(BaseModel):
+    id:Optional [int]=None                  
