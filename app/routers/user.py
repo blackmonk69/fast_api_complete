@@ -14,6 +14,15 @@ router=APIRouter(prefix="/users", tags=['Users'])
 def create_user(user: schemas.Class_UserCreate , 
                  db: Session = Depends(get_db)): #no confundir uno es la clase post (schema) (que recibe los datos) y el otro el modelo post
    
+    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    
+    # Si el email ya está registrado, lanza una excepción
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"El email '{user.email}' ya está registrado. Por favor, utiliza otro."
+        )
+    
     #hash the password
     hashed_password=utils.hash(user.password)
     user.password=hashed_password
